@@ -1,6 +1,151 @@
-@import './base.css';
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
-/* ── Layout ───────────────────────────────────────────── */
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ── Light Mode ──────────────────────────────────────── */
+
+:root {
+  --radius: 0.625rem;
+  --background: #fff;
+  --foreground: #0a0a0a;
+  --card: #fff;
+  --card-foreground: #0a0a0a;
+  --popover: #fff;
+  --popover-foreground: #0a0a0a;
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --secondary: #f5f5f5;
+  --secondary-foreground: #171717;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --accent: #f5f5f5;
+  --accent-foreground: #171717;
+  --destructive: #e40014;
+  --destructive-foreground: #fcf3f3;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #a1a1a1;
+  --chart-1: var(--color-blue-300);
+  --chart-2: var(--color-blue-500);
+  --chart-3: var(--color-blue-600);
+  --chart-4: var(--color-blue-700);
+  --chart-5: var(--color-blue-800);
+  --sidebar: #fafafa;
+  --sidebar-foreground: #0a0a0a;
+  --sidebar-primary: #171717;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-accent-foreground: #171717;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #a1a1a1;
+}
+
+/* ── Dark Mode ───────────────────────────────────────── */
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #171717;
+  --card-foreground: #fafafa;
+  --popover: #171717;
+  --popover-foreground: #fafafa;
+  --primary: #e5e5e5;
+  --primary-foreground: #171717;
+  --secondary: #262626;
+  --secondary-foreground: #fafafa;
+  --muted: #262626;
+  --muted-foreground: #a1a1a1;
+  --accent: #404040;
+  --accent-foreground: #fafafa;
+  --destructive: #ff6568;
+  --destructive-foreground: #df2225;
+  --border: rgb(255 255 255 / 0.1);
+  --input: rgb(255 255 255 / 0.15);
+  --ring: #737373;
+  --chart-1: var(--color-blue-300);
+  --chart-2: var(--color-blue-500);
+  --chart-3: var(--color-blue-600);
+  --chart-4: var(--color-blue-700);
+  --chart-5: var(--color-blue-800);
+  --sidebar: #171717;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #1447e6;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #262626;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: rgb(255 255 255 / 0.1);
+  --sidebar-ring: #525252;
+}
+
+/* ── Base Layer ──────────────────────────────────────── */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ul {
+    list-style: none;
+  }
+}
+
+/* ── Layout ──────────────────────────────────────────── */
 
 #root {
   height: 100vh;
@@ -16,7 +161,7 @@
   overflow: hidden;
 }
 
-/* ── Titlebar ─────────────────────────────────────────── */
+/* ── Titlebar ────────────────────────────────────────── */
 
 .titlebar {
   height: 38px;
@@ -24,8 +169,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  background: var(--bg-titlebar);
-  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-titlebar, var(--card));
+  border-bottom: 1px solid var(--border);
   -webkit-app-region: drag;
   user-select: none;
 }
@@ -39,7 +184,7 @@
   -webkit-app-region: no-drag;
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: var(--muted-foreground);
   cursor: pointer;
   padding: 4px 8px;
   display: flex;
@@ -50,14 +195,14 @@
 }
 
 .sidebar-toggle:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
+  background: var(--accent);
+  color: var(--foreground);
 }
 
 .titlebar-title {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--muted-foreground);
   margin-left: 8px;
   white-space: nowrap;
   overflow: hidden;
@@ -71,7 +216,7 @@
   flex-shrink: 0;
 }
 
-/* ── Content ──────────────────────────────────────────── */
+/* ── Content ─────────────────────────────────────────── */
 
 .content-area {
   display: flex;
@@ -80,13 +225,13 @@
   overflow: hidden;
 }
 
-/* ── Sidebar ──────────────────────────────────────────── */
+/* ── Sidebar ─────────────────────────────────────────── */
 
 .sidebar {
   width: 240px;
   flex-shrink: 0;
-  background: var(--bg-sidebar);
-  border-right: 1px solid var(--border-color);
+  background: var(--sidebar);
+  border-right: 1px solid var(--sidebar-border, var(--border));
   overflow-y: auto;
   overflow-x: hidden;
   transition: width 200ms ease;
@@ -104,7 +249,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: var(--muted-foreground);
 }
 
 .worktree-list {
@@ -122,17 +267,17 @@
 }
 
 .worktree-item:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--accent);
 }
 
 .worktree-item.active {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--accent);
 }
 
 .worktree-branch {
   font-size: 13px;
   font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
-  color: var(--text-primary);
+  color: var(--foreground);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -140,13 +285,13 @@
 
 .worktree-path {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--muted-foreground);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* ── Terminal ─────────────────────────────────────────── */
+/* ── Terminal ────────────────────────────────────────── */
 
 .terminal-container {
   flex: 1;
@@ -161,7 +306,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-primary);
+  background: var(--background);
 }
 
 .landing-content {
@@ -174,14 +319,14 @@
 .landing-title {
   font-size: 48px;
   font-weight: 700;
-  color: var(--text-secondary);
+  color: var(--muted-foreground);
   letter-spacing: -0.02em;
 }
 
 .landing-action {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  background: var(--secondary);
+  border: 1px solid var(--border);
+  color: var(--foreground);
   font-family: inherit;
   font-size: 14px;
   padding: 8px 24px;
@@ -191,10 +336,10 @@
 }
 
 .landing-action:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--accent);
 }
 
 .landing-hint {
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--muted-foreground);
 }

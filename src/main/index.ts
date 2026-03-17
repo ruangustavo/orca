@@ -104,6 +104,7 @@ function parseWorktreeList(output: string): WorktreeInfo[] {
 // ---------------------------------------------------------------------------
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron')
+  app.setName('Orca')
 
   if (process.platform === 'darwin') {
     const dockIcon = nativeImage.createFromPath(is.dev ? devIcon : icon)

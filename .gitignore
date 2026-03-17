@@ -45,3 +45,8 @@ coverage/
 # Temp
 tmp/
 .tmp/
+
+# Stably CLI (only docs/ are tracked)
+.stably/*
+!.stably/docs/
+.playwright-cli
