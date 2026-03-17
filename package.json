@@ -2,12 +2,13 @@
   "name": "orca",
   "version": "1.0.0",
   "description": "An Electron application with React and TypeScript",
-  "main": "./out/main/index.js",
-  "author": "example.com",
   "homepage": "https://electron-vite.org",
+  "author": "example.com",
+  "main": "./out/main/index.js",
   "scripts": {
-    "format": "prettier --write .",
-    "lint": "eslint --cache .",
+    "format": "oxfmt --write .",
+    "lint": "oxlint",
+    "prepare": "husky",
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
@@ -26,8 +27,6 @@
     "electron-updater": "^6.3.9"
   },
   "devDependencies": {
-    "@electron-toolkit/eslint-config-prettier": "^3.0.0",
-    "@electron-toolkit/eslint-config-ts": "^3.1.0",
     "@electron-toolkit/tsconfig": "^2.0.0",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.7",
@@ -36,15 +35,23 @@
     "electron": "^41.0.2",
     "electron-builder": "^26.0.12",
     "electron-vite": "^5.0.0",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "prettier": "^3.7.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "oxfmt": "^0.41.0",
+    "oxlint": "^1.56.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "typescript": "^5.9.3",
     "vite": "^7.2.6"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mts,cts}": [
+      "oxlint",
+      "oxfmt --write"
+    ],
+    "*.{json,css,html,yaml,yml,md}": [
+      "oxfmt --write"
+    ]
   },
   "pnpm": {
     "onlyBuiltDependencies": [

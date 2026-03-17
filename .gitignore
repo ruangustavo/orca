@@ -28,7 +28,7 @@ release/
 Thumbs.db
 
 # Lint/cache
-.eslintcache
+.oxlintcache
 
 # Logs
 *.log
