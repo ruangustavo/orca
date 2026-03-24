@@ -28,6 +28,7 @@ export default function MonacoEditor({
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
   const settings = useAppStore((s) => s.settings)
   const setPendingEditorReveal = useAppStore((s) => s.setPendingEditorReveal)
+  const setEditorCursorLine = useAppStore((s) => s.setEditorCursorLine)
   const isDark =
     settings?.theme === 'dark' ||
     (settings?.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
@@ -42,6 +43,13 @@ export default function MonacoEditor({
         onSave(value)
       })
 
+      // Track cursor line for "copy path to line" feature
+      const pos = editorInstance.getPosition()
+      if (pos) setEditorCursorLine(filePath, pos.lineNumber)
+      editorInstance.onDidChangeCursorPosition((e) => {
+        setEditorCursorLine(filePath, e.position.lineNumber)
+      })
+
       // If there's a pending reveal at mount time, execute it now
       const reveal = useAppStore.getState().pendingEditorReveal
       if (reveal) {
@@ -51,7 +59,7 @@ export default function MonacoEditor({
         editorInstance.focus()
       }
     },
-    [onSave]
+    [onSave, filePath, setEditorCursorLine, setPendingEditorReveal]
   )
 
   const handleChange = useCallback(
