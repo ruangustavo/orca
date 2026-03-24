@@ -10,7 +10,7 @@ export type UISlice = {
   setSidebarWidth: (width: number) => void
   activeView: 'terminal' | 'settings'
   setActiveView: (view: UISlice['activeView']) => void
-  activeModal: 'none' | 'create-worktree' | 'link-issue' | 'edit-comment' | 'delete-worktree'
+  activeModal: 'none' | 'create-worktree' | 'edit-meta' | 'delete-worktree'
   modalData: Record<string, unknown>
   openModal: (modal: UISlice['activeModal'], data?: Record<string, unknown>) => void
   closeModal: () => void

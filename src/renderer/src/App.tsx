@@ -233,6 +233,14 @@ function App(): React.JSX.Element {
         return
       }
 
+      // Cmd+Shift+F — toggle right sidebar / search tab
+      if (e.shiftKey && !e.ctrlKey && !e.altKey && e.key.toLowerCase() === 'f') {
+        e.preventDefault()
+        setRightSidebarTab('search')
+        setRightSidebarOpen(true)
+        return
+      }
+
       // Cmd+Shift+G — toggle right sidebar / source control tab
       if (e.shiftKey && !e.ctrlKey && !e.altKey && e.key.toLowerCase() === 'g') {
         e.preventDefault()

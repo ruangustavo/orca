@@ -141,7 +141,7 @@ function mapPRState(state: string): PRInfo['state'] {
 
 function deriveCheckStatus(rollup: unknown[] | null | undefined): CheckStatus {
   if (!rollup || !Array.isArray(rollup) || rollup.length === 0) {
-    return 'pending'
+    return 'neutral'
   }
 
   let hasFailure = false

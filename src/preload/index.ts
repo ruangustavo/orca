@@ -150,7 +150,13 @@ const api = {
   shell: {
     openPath: (path: string): Promise<void> => ipcRenderer.invoke('shell:openPath', path),
 
-    openExternal: (url: string): Promise<void> => ipcRenderer.invoke('shell:openExternal', url)
+    openUrl: (url: string): Promise<void> => ipcRenderer.invoke('shell:openUrl', url),
+
+    openFilePath: (path: string): Promise<void> => ipcRenderer.invoke('shell:openFilePath', path),
+
+    openFileUri: (uri: string): Promise<void> => ipcRenderer.invoke('shell:openFileUri', uri),
+
+    pathExists: (path: string): Promise<boolean> => ipcRenderer.invoke('shell:pathExists', path)
   },
 
   hooks: {
@@ -192,7 +198,25 @@ const api = {
     stat: (args: {
       filePath: string
     }): Promise<{ size: number; isDirectory: boolean; mtime: number }> =>
-      ipcRenderer.invoke('fs:stat', args)
+      ipcRenderer.invoke('fs:stat', args),
+    search: (args: {
+      query: string
+      rootPath: string
+      caseSensitive?: boolean
+      wholeWord?: boolean
+      useRegex?: boolean
+      includePattern?: string
+      excludePattern?: string
+      maxResults?: number
+    }): Promise<{
+      files: {
+        filePath: string
+        relativePath: string
+        matches: { line: number; column: number; matchLength: number; lineContent: string }[]
+      }[]
+      totalMatches: number
+      truncated: boolean
+    }> => ipcRenderer.invoke('fs:search', args)
   },
 
   git: {
