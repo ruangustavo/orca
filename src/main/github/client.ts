@@ -179,7 +179,7 @@ export async function updatePRTitle(
   }
 }
 
-function mapCheckStatus(state: string): PRCheckDetail['status'] {
+export function mapCheckStatus(state: string): PRCheckDetail['status'] {
   const s = state?.toUpperCase()
   if (s === 'PENDING' || s === 'QUEUED') {
     return 'queued'
@@ -190,7 +190,7 @@ function mapCheckStatus(state: string): PRCheckDetail['status'] {
   return 'completed'
 }
 
-function mapCheckConclusion(state: string): PRCheckDetail['conclusion'] {
+export function mapCheckConclusion(state: string): PRCheckDetail['conclusion'] {
   const s = state?.toUpperCase()
   if (s === 'SUCCESS' || s === 'PASS') {
     return 'success'
