@@ -161,52 +161,26 @@ describe('registerFilesystemHandlers', () => {
     expect(writeFileMock).not.toHaveBeenCalled()
   })
 
-  it('returns base64 content for supported image binaries', async () => {
-    statMock.mockResolvedValue({ size: 4, isDirectory: () => false, mtimeMs: 123 })
-    readFileMock.mockResolvedValue(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x00]))
-
+  it.each([
+    { ext: 'png', mime: 'image/png', data: [0x89, 0x50, 0x4e, 0x47, 0x00] },
+    { ext: 'pdf', mime: 'application/pdf', data: [0x25, 0x50, 0x44, 0x46, 0x00] },
+    {
+      ext: 'svg',
+      mime: 'image/svg+xml',
+      data: Array.from(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" />'))
+    }
+  ])('returns base64 content for supported $ext binaries', async ({ ext, mime, data }) => {
+    const buf = Buffer.from(data)
+    statMock.mockResolvedValue({ size: buf.length, isDirectory: () => false, mtimeMs: 123 })
+    readFileMock.mockResolvedValue(buf)
     registerFilesystemHandlers(store as never)
-
     await expect(
-      handlers.get('fs:readFile')!(null, { filePath: '/workspace/repo/image.png' })
+      handlers.get('fs:readFile')!(null, { filePath: `/workspace/repo/file.${ext}` })
     ).resolves.toEqual({
-      content: Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x00]).toString('base64'),
+      content: buf.toString('base64'),
       isBinary: true,
       isImage: true,
-      mimeType: 'image/png'
-    })
-  })
-
-  it('returns base64 content for supported pdf binaries', async () => {
-    const pdfBuffer = Buffer.from([0x25, 0x50, 0x44, 0x46, 0x00])
-    statMock.mockResolvedValue({ size: pdfBuffer.length, isDirectory: () => false, mtimeMs: 123 })
-    readFileMock.mockResolvedValue(pdfBuffer)
-
-    registerFilesystemHandlers(store as never)
-
-    await expect(
-      handlers.get('fs:readFile')!(null, { filePath: '/workspace/repo/document.pdf' })
-    ).resolves.toEqual({
-      content: pdfBuffer.toString('base64'),
-      isBinary: true,
-      isImage: true,
-      mimeType: 'application/pdf'
-    })
-  })
-
-  it('returns base64 content for supported text-based images', async () => {
-    statMock.mockResolvedValue({ size: 32, isDirectory: () => false, mtimeMs: 123 })
-    readFileMock.mockResolvedValue(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" />'))
-
-    registerFilesystemHandlers(store as never)
-
-    await expect(
-      handlers.get('fs:readFile')!(null, { filePath: '/workspace/repo/image.svg' })
-    ).resolves.toEqual({
-      content: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" />').toString('base64'),
-      isBinary: true,
-      isImage: true,
-      mimeType: 'image/svg+xml'
+      mimeType: mime
     })
   })
 
