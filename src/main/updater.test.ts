@@ -43,7 +43,7 @@ const {
     appOn.mockClear()
     eventHandlers.clear()
     on.mockClear()
-    autoUpdaterMock.checkForUpdates.mockReset()
+    autoUpdaterMock.checkForUpdates.mockReset().mockResolvedValue(null)
     autoUpdaterMock.downloadUpdate.mockReset()
     autoUpdaterMock.quitAndInstall.mockReset()
   }
