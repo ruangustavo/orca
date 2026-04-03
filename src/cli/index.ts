@@ -473,17 +473,41 @@ function formatWorktreeShow(result: { worktree: RuntimeWorktreeRecord }): string
 function printHelp(): void {
   console.log(`orca
 
-Usage:
+Usage: orca <command> [options]
+
+Startup:
+  open                      Launch Orca and wait for the runtime to be reachable
+  status                    Show app/runtime/graph readiness
+
+Repos:
+  repo list                 List repos registered in Orca
+  repo add                  Add a repo to Orca by filesystem path
+  repo show                 Show one registered repo
+  repo set-base-ref         Set the repo's default base ref for future worktrees
+  repo search-refs          Search branch/tag refs within a repo
+
+Worktrees:
+  worktree list             List Orca-managed worktrees
+  worktree show             Show one worktree
+  worktree create           Create a new Orca-managed worktree
+  worktree set              Update Orca metadata for a worktree
+  worktree rm               Remove a worktree from Orca and git
+  worktree ps               Show a compact orchestration summary across worktrees
+
+Terminals:
+  terminal list             List live Orca-managed terminals
+  terminal show             Show terminal metadata and preview
+  terminal read             Read bounded terminal output
+  terminal send             Send input to a live terminal
+  terminal wait             Wait for a terminal condition
+  terminal stop             Stop terminals for a worktree
+
+Common Commands:
   orca open [--json]
   orca status [--json]
-  orca repo list [--json]
-  orca repo add --path <path> [--json]
-  orca repo show --repo <selector> [--json]
-  orca repo set-base-ref --repo <selector> --ref <ref> [--json]
-  orca repo search-refs --repo <selector> --query <text> [--limit <n>] [--json]
   orca worktree list [--repo <selector>] [--limit <n>] [--json]
-  orca worktree show --worktree <selector> [--json]
   orca worktree create --repo <selector> --name <name> [--base-branch <ref>] [--issue <number>] [--comment <text>] [--json]
+  orca worktree show --worktree <selector> [--json]
   orca worktree set --worktree <selector> [--display-name <name>] [--issue <number|null>] [--comment <text>] [--json]
   orca worktree rm --worktree <selector> [--force] [--json]
   orca worktree ps [--limit <n>] [--json]
@@ -492,7 +516,45 @@ Usage:
   orca terminal read --terminal <handle> [--json]
   orca terminal send --terminal <handle> [--text <text>] [--enter] [--interrupt] [--json]
   orca terminal wait --terminal <handle> --for exit [--timeout-ms <ms>] [--json]
-  orca terminal stop --worktree <selector> [--json]`)
+  orca terminal stop --worktree <selector> [--json]
+  orca repo list [--json]
+  orca repo add --path <path> [--json]
+  orca repo show --repo <selector> [--json]
+  orca repo set-base-ref --repo <selector> --ref <ref> [--json]
+  orca repo search-refs --repo <selector> --query <text> [--limit <n>] [--json]
+
+Selectors:
+  --repo <selector>         Registered repo selector such as id:<id>, name:<name>, or path:<path>
+  --worktree <selector>     Worktree selector such as id:<id>, branch:<branch>, issue:<number>, or path:<path>
+  --terminal <handle>       Runtime-issued terminal handle returned by \`orca terminal list --json\`
+
+Terminal Send Options:
+  --text <text>             Text to send to the terminal
+  --enter                   Append Enter after sending text
+  --interrupt               Send as an interrupt-style input when supported
+
+Wait Options:
+  --for exit                Wait until the target terminal exits
+  --timeout-ms <ms>         Maximum wait time before timing out
+
+Output Options:
+  --json                    Emit machine-readable JSON instead of human text
+  --help                    Show this help message
+
+Behavior:
+  Most commands require a running Orca runtime. If Orca is not open yet, run \`orca open\` first.
+  Use selectors for discovery and handles for repeated live terminal operations.
+
+Examples:
+  $ orca open
+  $ orca status --json
+  $ orca repo list
+  $ orca worktree create --repo name:orca --name cli-test-1 --issue 273
+  $ orca worktree show --worktree branch:Jinwoo-H/cli
+  $ orca worktree ps --limit 10
+  $ orca terminal list --worktree path:/Users/me/orca/workspaces/orca/cli-test-1 --json
+  $ orca terminal send --terminal term_123 --text "hi" --enter
+  $ orca terminal wait --terminal term_123 --for exit --timeout-ms 60000 --json`)
 }
 
 void main()

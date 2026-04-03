@@ -1,6 +1,6 @@
-import { useAppStore } from '@/store'
 import { paneLeafId, serializePaneTree } from '@/components/terminal-pane/layout-serialization'
 import type { PaneManager } from '@/lib/pane-manager/pane-manager'
+import type { AppState } from '@/store/types'
 import type { RuntimeSyncWindowGraph } from '../../../shared/runtime-types'
 
 type RegisteredTerminalTab = {
@@ -14,6 +14,11 @@ type RegisteredTerminalTab = {
 const registeredTabs = new Map<string, RegisteredTerminalTab>()
 let syncScheduled = false
 let syncEnabled = false
+let getStoreState: (() => AppState) | null = null
+
+export function setRuntimeGraphStoreStateGetter(getter: (() => AppState) | null): void {
+  getStoreState = getter
+}
 
 export function registerRuntimeTerminalTab(tab: RegisteredTerminalTab): () => void {
   registeredTabs.set(tab.tabId, tab)
@@ -43,10 +48,14 @@ export function scheduleRuntimeGraphSync(): void {
 }
 
 async function syncRuntimeGraph(): Promise<void> {
-  if (!syncEnabled) {
+  if (!syncEnabled || !getStoreState) {
     return
   }
-  const state = useAppStore.getState()
+  // Why: the runtime graph helper cannot import the Zustand store directly
+  // because the terminal slice also imports this module to schedule syncs.
+  // Injecting the getter from App keeps the runtime graph path out of the
+  // store construction cycle and avoids test-time partial initialization.
+  const state = getStoreState()
   const graph: RuntimeSyncWindowGraph = {
     tabs: [],
     leaves: []
