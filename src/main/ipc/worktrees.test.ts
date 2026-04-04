@@ -65,7 +65,7 @@ vi.mock('../hooks', () => ({
 }))
 
 vi.mock('./worktree-logic', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('./worktree-logic')>()
+  const actual = (await importOriginal()) as Record<string, unknown>
   return {
     ...actual,
     computeWorktreePath: computeWorktreePathMock,
