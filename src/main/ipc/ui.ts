@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { BrowserWindow, ipcMain } from 'electron'
 import type { Store } from '../persistence'
 import type { PersistedUIState } from '../../shared/types'
 
@@ -9,5 +9,10 @@ export function registerUIHandlers(store: Store): void {
 
   ipcMain.handle('ui:set', (_event, args: Partial<PersistedUIState>) => {
     store.updateUI(args)
+  })
+
+  ipcMain.handle('ui:get-is-full-screen', (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    return win ? win.isFullScreen() : false
   })
 }

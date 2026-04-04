@@ -142,6 +142,13 @@ export function useIpcEvents(): void {
       })
     )
 
+    window.api.ui
+      .getIsFullScreen()
+      .then((isFullScreen) => {
+        useAppStore.getState().setIsFullScreen(isFullScreen)
+      })
+      .catch(console.error)
+
     // Browser zoom fallback when no terminal is active
     unsubs.push(
       window.api.ui.onTerminalZoom((direction) => {
