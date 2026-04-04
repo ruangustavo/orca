@@ -29,6 +29,7 @@ export function openDetectedFilePath(
   void (async () => {
     let statResult
     try {
+      await window.api.fs.authorizeExternalPath({ targetPath: filePath })
       statResult = await window.api.fs.stat({ filePath })
     } catch {
       return
