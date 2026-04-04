@@ -5,8 +5,12 @@ import { addWorktree, listWorktrees } from '../git/worktree'
 import { createSetupRunnerScript, getEffectiveHooks, runHook } from '../hooks'
 import { OrcaRuntimeService } from './orca-runtime'
 
-const { MOCK_GIT_WORKTREES, addWorktreeMock, computeWorktreePathMock, ensurePathWithinWorkspaceMock } =
-  vi.hoisted(() => ({
+const {
+  MOCK_GIT_WORKTREES,
+  addWorktreeMock,
+  computeWorktreePathMock,
+  ensurePathWithinWorkspaceMock
+} = vi.hoisted(() => ({
   MOCK_GIT_WORKTREES: [
     {
       path: '/tmp/worktree-a',
@@ -113,7 +117,11 @@ computeWorktreePathMock.mockImplementation(
     settings: { nestWorkspaces: boolean; workspaceDir: string }
   ) => {
     if (settings.nestWorkspaces) {
-      const repoName = repoPath.split(/[\\/]/).at(-1)?.replace(/\.git$/, '') ?? 'repo'
+      const repoName =
+        repoPath
+          .split(/[\\/]/)
+          .at(-1)
+          ?.replace(/\.git$/, '') ?? 'repo'
       return `${settings.workspaceDir}/${repoName}/${sanitizedName}`
     }
     return `${settings.workspaceDir}/${sanitizedName}`
@@ -573,6 +581,8 @@ describe('OrcaRuntimeService', () => {
     })
     runtime.attachWindow(1)
 
+    computeWorktreePathMock.mockReturnValue('/tmp/workspaces/runtime-hook-test')
+    ensurePathWithinWorkspaceMock.mockReturnValue('/tmp/workspaces/runtime-hook-test')
     vi.mocked(getEffectiveHooks).mockReturnValue({
       scripts: {
         setup: 'pnpm worktree:setup'
