@@ -38,6 +38,8 @@ export type UISlice = {
   setUpdateStatus: (status: UpdateStatus) => void
   dismissedUpdateVersion: string | null
   dismissUpdate: () => void
+  isFullScreen: boolean
+  setIsFullScreen: (v: boolean) => void
 }
 
 export const createUISlice: StateCreator<AppState, [], [], UISlice> = (set) => ({
@@ -107,5 +109,7 @@ export const createUISlice: StateCreator<AppState, [], [], UISlice> = (set) => (
   dismissUpdate: () =>
     set((s) => ({
       dismissedUpdateVersion: 'version' in s.updateStatus ? (s.updateStatus.version ?? null) : null
-    }))
+    })),
+  isFullScreen: false,
+  setIsFullScreen: (v) => set({ isFullScreen: v })
 })

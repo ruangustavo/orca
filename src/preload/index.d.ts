@@ -127,6 +127,7 @@ type UIApi = {
   onFileDrop: (callback: (data: { path: string }) => void) => () => void
   getZoomLevel: () => number
   setZoomLevel: (level: number) => void
+  onFullscreenChanged: (callback: (isFullScreen: boolean) => void) => () => void
 }
 
 type FsApi = {
